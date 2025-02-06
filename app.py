@@ -34,7 +34,7 @@ def upload_file():
                 {"role": "user", "content": f"Gerar uma documentação detalhada para o seguinte código Java em português do Brasil, no formato markdown:\n{java_content}"}
             ]
         )
-        documentation = response['choices'][0]['message']['content'].strip()
+        documentation = response.choices[0].message['content'].strip()
         return jsonify({'documentation': documentation})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
