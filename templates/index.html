@@ -8,14 +8,36 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2>Upload Java File</h2>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <input type="file" name="file" class="form-control-file" accept=".java" required>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Java File Documentation Generator</h3>
         </div>
-        <button type="submit" class="btn btn-primary">Upload</button>
-    </form>
+        <div class="card-body">
+            <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="fileInput">Select a Java file to upload:</label>
+                    <input type="file" id="fileInput" name="file" class="form-control-file" accept=".java" required>
+                    <div class="invalid-feedback">Please select a valid .java file.</div>
+                </div>
+                <button type="submit" class="btn btn-success">Upload</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        const fileInput = document.getElementById('fileInput');
+        const filePath = fileInput.value;
+        const allowedExtensions = /\.java$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            fileInput.classList.add('is-invalid');
+            event.preventDefault();
+        } else {
+            fileInput.classList.remove('is-invalid');
+        }
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
