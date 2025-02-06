@@ -1,0 +1,35 @@
+from flask import Flask, request, jsonify, render_template
+import openai
+
+app = Flask(__name__)
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if not file.filename.endswith('.java'):
+        return jsonify({'error': 'Only .java files are allowed'}), 400
+    # Read the content of the Java file
+    java_content = file.read().decode('utf-8')
+    
+    # Call OpenAI API to generate documentation
+    try:
+        response = openai.Completion.create(
+            engine="gpt-4o",
+            prompt=f"Generate documentation for the following Java code:\n{java_content}",
+            max_tokens=1500
+        )
+        documentation = response.choices[0].text.strip()
+        return jsonify({'documentation': documentation})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=53732, debug=True)
