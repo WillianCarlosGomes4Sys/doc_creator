@@ -35,7 +35,7 @@ def upload_file():
             ]
         )
         documentation = response.choices[0].message.content.strip()
-        return jsonify({'documentation': documentation})
+        return render_template('documentation.html', documentation=documentation)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
