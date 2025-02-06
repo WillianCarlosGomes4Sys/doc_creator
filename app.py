@@ -29,7 +29,7 @@ def upload_file():
     try:
         response = openai.Completion.create(
             engine="gpt-4o",
-            prompt=f"Generate documentation for the following Java code:\n{java_content}",
+            prompt=f"Gerar uma documentação detalhada para o seguinte código Java em português do Brasil, no formato markdown:\n{java_content}",
             max_tokens=1500
         )
         documentation = response.choices[0].text.strip()
