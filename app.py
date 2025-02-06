@@ -27,12 +27,15 @@ def upload_file():
     
     # Call OpenAI API to generate documentation
     try:
-        response = openai.Completion.create(
-            engine="gpt-4o",
-            prompt=f"Gerar uma documentação detalhada para o seguinte código Java em português do Brasil, no formato markdown:\n{java_content}",
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "Você é um assistente que gera documentação detalhada para código Java."},
+                {"role": "user", "content": f"Gerar uma documentação detalhada para o seguinte código Java em português do Brasil, no formato markdown:\n{java_content}"}
+            ],
             max_tokens=1500
         )
-        documentation = response.choices[0].text.strip()
+        documentation = response['choices'][0]['message']['content'].strip()
         return jsonify({'documentation': documentation})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
